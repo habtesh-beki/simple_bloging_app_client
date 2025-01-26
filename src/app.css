@@ -1,0 +1,20 @@
+@import "tailwindcss";
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+
+html {
+    font-family: "HvDTrial Brandon Grotesque";
+}
+
+@theme {
+    --color-primary-bg: white;
+    --color-secodary-bg: #222222;
+    --color-alt-bg: #EBD8B8;
+    --color-alt2-bg: #E3DAED;
+    --color-primary-text: #000000;
+    --color-active-text: #FE4A1C;
+    --font-bebas: 'Bebas Neue';
+}
