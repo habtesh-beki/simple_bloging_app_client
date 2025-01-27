@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 export function Header() {
   return (
     <>
@@ -6,13 +8,10 @@ export function Header() {
 
         <ul className="flex flex-col items-end w-3/4 list-none">
           <li className="hover:text-active-text text-lg">
-            <a href="">Home</a>
+            <Link to="/">Home</Link>
           </li>
           <li className="hover:text-active-text text-lg">
-            <a href="">Blogs</a>
-          </li>
-          <li className="hover:text-active-text text-lg">
-            <a href="">Home</a>
+            <Link to="/blogs">Blogs</Link>
           </li>
         </ul>
       </header>
