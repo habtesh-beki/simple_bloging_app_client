@@ -1,0 +1,43 @@
+@font-face {
+    font-family: 'Bebas Neue';
+    src: url('assets/fonts/Bebas_Neue/BebasNeue-Regular.ttf') format(truetype);
+  }
+
+@font-face {
+    font-family: 'HvDTrial Brandon Grotesque';
+    src: 
+    url('assets/fonts/brandon-grotesque-font-family/Brandon_Grotesque_regular.otf') format(truetype);
+    font-weight: normal;
+  }
+
+@font-face {
+    font-family: 'HvDTrial Brandon Grotesque';
+    src: 
+    url('assets/fonts/brandon-grotesque-font-family/Brandon_Grotesque_black.otf') format(truetype);
+    font-weight: bolder;
+  }
+
+@font-face {
+    font-family: 'HvDTrial Brandon Grotesque';
+    src: 
+    url('assets/fonts/brandon-grotesque-font-family/Brandon_Grotesque_bold.otf') format(truetype);
+    font-weight: bold;
+  }
+@font-face {
+    font-family: 'HvDTrial Brandon Grotesque';
+    src: 
+    url('assets/fonts/brandon-grotesque-font-family/Brandon_Grotesque_light.otf') format(truetype);
+    font-weight: light;
+  }
+@font-face {
+    font-family: 'HvDTrial Brandon Grotesque';
+    src: 
+    url('assets/fonts/brandon-grotesque-font-family/Brandon_Grotesque_medium-Bold.otf') format(truetype);
+    font-weight: 400;
+  }
+@font-face {
+    font-family: 'HvDTrial Brandon Grotesque';
+    src: 
+    url('assets/fonts/brandon-grotesque-font-family/Brandon_Grotesque_thin.otf') format(truetype);
+    font-weight: lighter;
+  }
