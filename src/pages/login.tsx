@@ -17,7 +17,7 @@ interface LoginResponseData {
 }
 
 export function Login() {
-  const { userLoggedIn, setUserLoggedIn } = useContext(UserLoggedInContext);
+  const { setUserLoggedIn } = useContext(UserLoggedInContext);
   const navigate = useNavigate();
   const nameRef = React.createRef<HTMLInputElement>();
   const passwordRef = React.createRef<HTMLInputElement>();
