@@ -1,9 +1,13 @@
 import { Route, Routes, BrowserRouter } from "react-router";
+import React, { useState } from "react";
+
 import { Home } from "./pages";
 import { Blogs } from "./pages/blogs";
 import { Layout } from "./layout";
-import { useState } from "react";
 import { Blog } from "./pages/blog";
+
+import { Signup } from "./pages/signup";
+import { Login } from "./pages/login";
 
 const blogs = [
   {
@@ -56,34 +60,52 @@ const blogs = [
   },
 ];
 
+interface UserLoggedInContextData {
+  userLoggedIn: boolean;
+  setUserLoggedIn: (loggedIn: boolean) => void;
+}
+
+export const UserLoggedInContext = React.createContext<UserLoggedInContextData>(
+  {
+    userLoggedIn: false,
+    setUserLoggedIn: () => {},
+  }
+);
+
 function App() {
   const [clickId, setClickId] = useState<string | null>(null);
+  const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
 
   return (
     <>
-      <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/blogs">
-              <Route
-                index
-                element={
-                  <Blogs
-                    setClickId={setClickId}
-                    clickId={clickId}
-                    blogs={blogs}
-                  />
-                }
-              />
-              <Route
-                path="blog"
-                element={<Blog clickId={clickId} blogs={blogs} />}
-              />
-            </Route>
-          </Routes>
-        </Layout>
-      </BrowserRouter>
+      <UserLoggedInContext.Provider value={{ userLoggedIn, setUserLoggedIn }}>
+        <BrowserRouter>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              {/* <Route path="/blog" element={<Blog />} /> */}
+              <Route path="/blogs">
+                <Route
+                  index
+                  element={
+                    <Blogs
+                      setClickId={setClickId}
+                      clickId={clickId}
+                      blogs={blogs}
+                    />
+                  }
+                />
+                <Route
+                  path="blog"
+                  element={<Blog clickId={clickId} blogs={blogs} />}
+                />
+              </Route>
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+      </UserLoggedInContext.Provider>
     </>
   );
 }
