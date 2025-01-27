@@ -54,7 +54,10 @@ export function Home() {
             <div className="flex flex-col gap-10">
               {hotTopics.map((topic) => {
                 return (
-                  <div key={topic.title} className=" border-b-[1px] border-s border-l-0 border-[#bbbbbb]">
+                  <div
+                    key={topic.title}
+                    className=" border-b-[1px] border-s border-l-0 border-[#bbbbbb]"
+                  >
                     <h3 className="font-bold text-3xl">{topic.title}</h3>
                     <p className="font-light text-[#555555]">{topic.author}</p>
                   </div>
@@ -63,7 +66,7 @@ export function Home() {
             </div>
             <a
               className="text-center py-5 w-full border-[1px] border-[#555555] rounded-md font-bold text-xl hover:bg-secodary-bg hover:text-primary-bg transition-all"
-              href="/blog"
+              href="/blogs"
             >
               Explore More
             </a>
@@ -83,9 +86,15 @@ export function Home() {
             return (
               <div className="p-5 bg-secodary-bg rounded-[1.4rem] md:grow md:shrink md:basis-[350px]">
                 <div className="flex flex-col gap-3 p-5 border-[1px] border-alt2-bg rounded-xl">
-                  <h3 className="font-semibold text-3xl text-alt2-bg">{topic.title}</h3>
-                  <p className="font-normal text-xl text-alt2-bg">{topic.content}</p>
-                  <h5 className="font-bold text-xl text-active-text text-end">{topic.author}</h5>
+                  <h3 className="font-semibold text-3xl text-alt2-bg">
+                    {topic.title}
+                  </h3>
+                  <p className="font-normal text-xl text-alt2-bg">
+                    {topic.content}
+                  </p>
+                  <h5 className="font-bold text-xl text-active-text text-end">
+                    {topic.author}
+                  </h5>
                 </div>
               </div>
             );
