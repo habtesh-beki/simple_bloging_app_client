@@ -21,7 +21,7 @@ export function Header() {
     },
     {
       text: "Blogs",
-      href: "/blog",
+      href: "/blogs",
     },
   ];
   const buttons = [
@@ -56,12 +56,14 @@ export function Header() {
         <div className="font-extrabold text-2xl w-1/4">SiMPLE BLOGGING APP</div>
 
         <ul className="flex flex-col items-end w-3/4 list-none">
-          <li className="hover:text-active-text text-lg">
-            <Link to="/">Home</Link>
-          </li>
-          <li className="hover:text-active-text text-lg">
+          {links.map((link) => (
+            <li className="hover:text-active-text text-lg">
+              <Link to={link.href}>{link.text}</Link>
+            </li>
+          ))}
+          {/* <li className="hover:text-active-text text-lg">
             <Link to="/blogs">Blogs</Link>
-          </li>
+          </li> */}
         </ul>
         {!userLoggedIn && (
           <ul className="flex flex-wrap justify-end w-1/4 items-end list-none gap-2">
