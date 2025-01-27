@@ -1,6 +1,60 @@
+import { useContext, useEffect, useState } from "react";
 import { TrendingBlogCard } from "../components/home/TrendingBlogCard";
+import { UserLoggedInContext } from "../App";
+import { BlogI } from "./blogs";
+import axios, { AxiosError, AxiosResponse } from "axios";
+
+export interface BlogsFetchResponse {
+  status: string;
+  data: BlogI[];
+}
 
 export function Home() {
+  const { userLoggedIn, setUserLoggedIn } = useContext(UserLoggedInContext);
+  const [blogsOwn, setBlogsOwn] = useState<BlogI[]>([]);
+  const [blogs, setBlogs] = useState<BlogI[]>([]);
+
+  useEffect(() => {
+    const fetchOwnBlogs = async () => {
+      try {
+        console.log(userLoggedIn);
+        setUserLoggedIn(sessionStorage.getItem("logged-in") === "true" || false);
+        console.log("SESSION: " + sessionStorage.getItem("logged-in"));
+        const url =
+          sessionStorage.getItem("logged-in") === "true" || false
+            ? "http://localhost:4000/api/v1/search/own"
+            : "http://localhost:4000/api/v1/blog";
+        const res = await axios.get<any, AxiosResponse<BlogsFetchResponse, any>>(url, {
+          withCredentials: true,
+        });
+        console.log(res.config.baseURL);
+        console.log(res.data.data);
+        setBlogsOwn(res.data.data);
+      } catch (error: any | AxiosError) {
+        console.log(error.response.data.error);
+      }
+    };
+
+    // setUserLoggedIn(sessionStorage.getItem("logged-in") === "true" || false);
+    const fetchBlogs = async () => {
+      try {
+        console.log(userLoggedIn);
+        console.log("SESSION: " + sessionStorage.getItem("logged-in"));
+        const url = "http://localhost:4000/api/v1/blog";
+        const res = await axios.get<any, AxiosResponse<BlogsFetchResponse, any>>(url, {
+          withCredentials: true,
+        });
+        console.log(res.config.baseURL);
+        console.log(res.data.data);
+        setBlogs(res.data.data);
+      } catch (error: any | AxiosError) {
+        console.log(error.response.data.error);
+      }
+    };
+
+    fetchOwnBlogs();
+    fetchBlogs();
+  }, [userLoggedIn]);
   const hotTopics = [
     {
       title: "Someone should do something about climate",
@@ -39,27 +93,24 @@ export function Home() {
     <>
       <div className=" pb-20 border-b-[1px] border-b-[#777777]">
         <div className="relative">
-          <h1 className="text-[4rem] sm:text-[6rem] md:text-[7rem] lg:text-[10rem] font-bold font-bebas">
-            BLOGS BY YOU
+          <h1 className="text-[4rem] sm:text-[6rem] md:text-[7rem] lg:text-[10rem] text-secodary-bg font-bold font-bebas">
+            {userLoggedIn ? "BLOGS BY YOU" : "BLOGS BY EVERONE"}
           </h1>
         </div>
         <div className="flex flex-col lg:flex-row gap-7">
           <div className="flex flex-col lg:flex-row gap-5 flex-wrap lg:w-[80%] w-full">
-            <TrendingBlogCard />
-            <TrendingBlogCard />
-            <TrendingBlogCard />
+            {blogsOwn.map((blog) => {
+              return <TrendingBlogCard blog={blog} key={blog.id} />;
+            })}
           </div>
           <div className=" lg:w-1/4 w-full flex flex-col gap-10">
             <h2 className="text-active-text font-bold text-2xl">HOT TOPICS</h2>
             <div className="flex flex-col gap-10">
-              {hotTopics.map((topic) => {
+              {blogs.map((topic) => {
                 return (
-                  <div
-                    key={topic.title}
-                    className=" border-b-[1px] border-s border-l-0 border-[#bbbbbb]"
-                  >
+                  <div key={topic.id} className=" border-b-[1px] border-s border-l-0 border-[#bbbbbb]">
                     <h3 className="font-bold text-3xl">{topic.title}</h3>
-                    <p className="font-light text-[#555555]">{topic.author}</p>
+                    <p className="font-light text-[#555555]">{topic.user?.name}</p>
                   </div>
                 );
               })}
@@ -82,19 +133,13 @@ export function Home() {
           </a>
         </div>
         <div className="flex flex-col gap-5 md:flex-row md:flex-wrap">
-          {browseTopicsContent.map((topic) => {
+          {blogs.map((topic) => {
             return (
-              <div className="p-5 bg-secodary-bg rounded-[1.4rem] md:grow md:shrink md:basis-[350px]">
-                <div className="flex flex-col gap-3 p-5 border-[1px] border-alt2-bg rounded-xl">
-                  <h3 className="font-semibold text-3xl text-alt2-bg">
-                    {topic.title}
-                  </h3>
-                  <p className="font-normal text-xl text-alt2-bg">
-                    {topic.content}
-                  </p>
-                  <h5 className="font-bold text-xl text-active-text text-end">
-                    {topic.author}
-                  </h5>
+              <div key={topic.id} className="p-5 bg-secodary-bg rounded-[1.4rem] md:grow md:shrink md:basis-[350px]">
+                <div className="flex flex-col gap-3 p-5 border-[1px] border-alt2-bg rounded-xl h-full">
+                  <h3 className="font-semibold text-3xl text-alt2-bg">{topic.title}</h3>
+                  <p className="font-light text-xl text-alt2-bg">{topic.body}</p>
+                  <h5 className="font-bold text-xl text-active-text text-end">{topic.user?.name}</h5>
                 </div>
               </div>
             );

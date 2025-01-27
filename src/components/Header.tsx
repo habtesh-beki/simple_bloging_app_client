@@ -37,12 +37,9 @@ export function Header() {
 
   const onLogOut = async () => {
     try {
-      const res = await axios.get<any, AxiosResponse<LogoutResponseData>>(
-        "http://localhost:4000/api/v1/auth/logout",
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axios.get<any, AxiosResponse<LogoutResponseData>>("http://localhost:4000/api/v1/auth/logout", {
+        withCredentials: true,
+      });
       console.log(res.data.data);
       sessionStorage.removeItem("logged-in");
       setUserLoggedIn(sessionStorage.getItem("logged-in") === "true" || false);
@@ -55,10 +52,12 @@ export function Header() {
       <header className="flex w-full items-center gap-10">
         <div className="font-extrabold text-2xl w-1/4">SiMPLE BLOGGING APP</div>
 
-        <ul className="flex flex-col items-end w-3/4 list-none">
+        <ul className="flex flex-col items-center w-3/4 list-none">
           {links.map((link) => (
-            <li className="hover:text-active-text text-lg">
-              <Link to={link.href}>{link.text}</Link>
+            <li key={link.href} className="hover:text-active-text text-lg font-light">
+              <Link className="" to={link.href}>
+                {link.text}
+              </Link>
             </li>
           ))}
           {/* <li className="hover:text-active-text text-lg">
@@ -66,11 +65,11 @@ export function Header() {
           </li> */}
         </ul>
         {!userLoggedIn && (
-          <ul className="flex flex-wrap justify-end w-1/4 items-end list-none gap-2">
+          <ul className="flex flex-wrap justify-center w-1/4 items-end list-none gap-2">
             {buttons.map((button) => {
               return (
                 <button
-                  key={button.href}
+                  key={button.href + "-btn"}
                   className="grow shrink basis-[50px] max-w-[100px] bg-secodary-bg rounded-md p-2 text-alt-bg hover:bg-active-text text-lg font-light"
                 >
                   <a href={button.href}>{button.text}</a>

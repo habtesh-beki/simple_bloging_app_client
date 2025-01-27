@@ -10,7 +10,7 @@ export function Footer() {
     },
     {
       text: "Blogs",
-      href: "/blog",
+      href: "/blogs",
     },
     {
       text: "Register",

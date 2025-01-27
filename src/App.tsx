@@ -1,81 +1,49 @@
 import { Route, Routes, BrowserRouter } from "react-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Home } from "./pages";
-import { Blogs } from "./pages/blogs";
+import { BlogsFetchResponse, Home } from "./pages";
+import { BlogI, Blogs } from "./pages/blogs";
 import { Layout } from "./layout";
-import { Blog } from "./pages/blog";
+import { Blog } from "./pages/blog/blog";
 
 import { Signup } from "./pages/signup";
 import { Login } from "./pages/login";
-
-const blogs = [
-  {
-    id: "klsjf",
-    title: "Lorem ipsum dolor sit amet consectetur ",
-    discription:
-      " Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iure laudantium veniam delectus, est excepturi impedit repellendus vel doloribus molestias aliquam magni voluptas maiores alias autem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quidem quisquam doloremque repellendus, unde minima deleniti accusamus velit eos laboriosam sint tempora iusto cupiditate aut sed similique ipsam ipsum? Optio odit esse, eligendi nihil, deserunt vel unde delectus cum ut, labore est odio provident voluptatibus. Quis reprehenderit deleniti voluptate quam.",
-    name: "Haileab",
-    date: "12/04/2007",
-  },
-  {
-    id: "sw3kjl23",
-    title: "Lorem ipsum dolor sit amet consectetur",
-    discription:
-      " Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iure laudantium veniam delectus, est excepturi impedit repellendus vel doloribus molestias aliquam magni voluptas maiores alias autem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem quidem quisquam doloremque repellendus, unde minima deleniti accusamus velit eos laboriosam sint tempora iusto cupiditate aut sed similique ipsam ipsum? Optio odit esse, eligendi nihil, deserunt vel unde delectus cum ut, labore est odio provident voluptatibus. Quis reprehenderit deleniti voluptate quam.",
-    name: "Haileab",
-    date: "12/04/2007",
-  },
-  {
-    id: "756lkj",
-    title: "Lorem ipsum dolor sit amet consectetur ",
-    discription:
-      " Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iure laudantium veniam delectus, est excepturi impedit repellendus vel doloribus molestias aliquam magni voluptas maiores alias autem!",
-    name: "Haileab",
-    date: "12/04/2007",
-  },
-  {
-    id: "jlksfjelwr3243",
-    title: "Lorem ipsum dolor sit amet consectetur",
-    discription:
-      " Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iure laudantium veniam delectus, est excepturi impedit repellendus vel doloribus molestias aliquam magni voluptas maiores alias autem!",
-    name: "Haileab",
-    date: "12/04/2007",
-  },
-  {
-    id: "2432lkjlk",
-    title: "Lorem ipsum dolor sit amet consectetur",
-    discription:
-      " Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iure laudantium veniam delectus, est excepturi impedit repellendus vel doloribus molestias aliquam magni voluptas maiores alias autem!",
-    name: "Haileab",
-    date: "12/04/2007",
-  },
-  {
-    id: "rpowerl1212",
-    title: "Lorem ipsum dolor sit amet consectetur",
-    discription:
-      " Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iure laudantium veniam delectus, est excepturi impedit repellendus vel doloribus molestias aliquam magni voluptas maiores alias autem!",
-    name: "Haileab",
-    date: "12/04/2007",
-  },
-];
+import { NewBlog } from "./pages/blog/new";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
 interface UserLoggedInContextData {
   userLoggedIn: boolean;
-  setUserLoggedIn: (loggedIn: boolean) => void;
+  setUserLoggedIn: (value: boolean | ((prev: boolean) => boolean)) => void;
 }
 
-export const UserLoggedInContext = React.createContext<UserLoggedInContextData>(
-  {
-    userLoggedIn: false,
-    setUserLoggedIn: () => {},
-  }
-);
+export const UserLoggedInContext = React.createContext<UserLoggedInContextData>({
+  userLoggedIn: false,
+  setUserLoggedIn: () => {},
+});
 
 function App() {
   const [clickId, setClickId] = useState<string | null>(null);
   const [userLoggedIn, setUserLoggedIn] = useState<boolean>(false);
 
+  const [blogs, setBlogs] = useState<BlogI[]>([]);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const url = "http://localhost:4000/api/v1/blog";
+        const res = await axios.get<any, AxiosResponse<BlogsFetchResponse, any>>(url, {
+          withCredentials: true,
+        });
+        console.log(res.config.baseURL);
+        console.log(res.data.data);
+        setBlogs(res.data.data);
+      } catch (error: any | AxiosError) {
+        console.log(error.response.data.error);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
   return (
     <>
       <UserLoggedInContext.Provider value={{ userLoggedIn, setUserLoggedIn }}>
@@ -85,20 +53,9 @@ function App() {
               <Route path="/" element={<Home />} />
               {/* <Route path="/blog" element={<Blog />} /> */}
               <Route path="/blogs">
-                <Route
-                  index
-                  element={
-                    <Blogs
-                      setClickId={setClickId}
-                      clickId={clickId}
-                      blogs={blogs}
-                    />
-                  }
-                />
-                <Route
-                  path="blog"
-                  element={<Blog clickId={clickId} blogs={blogs} />}
-                />
+                <Route index element={<Blogs setClickId={setClickId} clickId={clickId} blogs={blogs} />} />
+                <Route path="blog" element={<Blog clickId={clickId} blogs={blogs} />} />
+                <Route path="new" element={<NewBlog />} />
               </Route>
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
