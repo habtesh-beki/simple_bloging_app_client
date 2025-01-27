@@ -43,7 +43,7 @@ export function Home() {
             </div>
             <a
               className="text-center py-5 w-full border-[1px] border-[#555555] rounded-md font-bold text-xl hover:bg-secodary-bg hover:text-primary-bg transition-all"
-              href="/blog"
+              href="/blogs"
             >
               Explore More
             </a>
